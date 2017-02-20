@@ -17,7 +17,7 @@ class QuwanspiderSpider(scrapy.Spider):
         count = 0;
         for p  in products:
             count +=  1
-            print ("==========%d===========" % count)
+            print ("==========首页：%d===========" % count)
             print ("title : " + p.xpath('dl/dd/a/@title').extract()[0])
             print("link : " + p.xpath('dl/dd/a/@href').extract()[0])
             print("price : " + p.xpath('dl/dd/span/text()').extract()[0])
