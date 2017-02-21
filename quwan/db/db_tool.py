@@ -26,8 +26,16 @@ class DBImpl(object):
         ''')
         print("create table success: 商品基本信息表")
 
+    def insert_goods_item(self, id, name, page, logo, price, brand, des):
+        price = price.replace('¥', '')
+        sql = "INSERT INTO goods_base VALUES (" + '\'' + id +"\',\'" + name +"\',\'" + page  +"\',\'" + logo +"\'," + price +",\'" +brand +"\',\'" +des +"\');"
+        self.conn.execute(sql)
+        self.conn.commit()
+        print(sql)
+
     def delete_goods_base_tab(self):
         self.__delete_table("goods_base")
+
 
     def create_pageidx_table(self): #页面索引表
         self.conn.execute('''
@@ -36,8 +44,16 @@ class DBImpl(object):
                goods_id       char(50) NOT  NULL);
                 ''')
         print("create table success: 页面--商品关联表")
+
+    def insert_page_goods(self, page_id, goods_id):
+        sql = "INSERT INTO page_goods VALUES (" + '\'' + page_id +"\',\'" + goods_id +"\');"
+        self.conn.execute(sql)
+        self.conn.commit()
+        print(sql)
+
     def delete_page_goods_tab(self):
         self.__delete_table("page_goods")
+
 
 
     def create_img_table(self): #图片表
@@ -50,6 +66,21 @@ class DBImpl(object):
            );
             ''')
         print("create table success: 商品--图片表")
+
+    def insert_goods_img(self, goods_id, type, url_list):
+        idx = 0
+        for url in url_list:
+            sql = "INSERT INTO goods_img VALUES (" + '\'' \
+                  + goods_id +"\',\'"\
+                  + type +"\',\'" \
+                  + url + "\'," \
+                  + idx +");"
+            idx +=1
+            self.conn.execute(sql)
+            print(sql)
+
+        self.conn.commit()
+
     def delete_img_tab(self):
         self.__delete_table("goods_img")
 
@@ -62,6 +93,23 @@ class DBImpl(object):
            );
             ''')
         print("create table success: 商品--属性表"  )
+
+    def insert_goods_attr(self, goods_id, attr_name_list, attr_value_list):
+
+        listlen = len(attr_name_list)
+        if (listlen > len(attr_value_list)):
+            listlen = len(attr_value_list)
+
+        for idx in range(listlen):
+            sql = "INSERT INTO goods_attr VALUES (" + '\'' \
+                  + goods_id +"\',\'"\
+                  + attr_name_list[idx] +"\',\'" \
+                  + attr_value_list[idx]\
+                   + "\');"
+            self.conn.execute(sql)
+            print(sql)
+        self.conn.commit()
+
     def delete_attr_tab(self):
         self.__delete_table("goods_attr")
 

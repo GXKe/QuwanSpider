@@ -12,13 +12,16 @@ class QuwanPipeline(object):
     def __init__(self):
         self.hDB = DBImpl()
         self.hDB.open_db()
-'''
+
+        '''
         #调用一次:建表
         self.hDB.create_attr_table()
         self.hDB.create_goods_table()
         self.hDB.create_img_table()
         self.hDB.create_pageidx_table()
-'''
+        '''
+
+
     def __del__(self):
         self.hDB.close_db()
 
@@ -26,3 +29,8 @@ class QuwanPipeline(object):
         self.item_count+=1
         print(item)
         print("第%d个Item" % self.item_count)
+        self.hDB.insert_goods_item(item['goods_id'], item['title'], item['page_id'],item['logo'],item['price']
+                             ,item['brand'],item['goods_des'])
+        f
+
+
