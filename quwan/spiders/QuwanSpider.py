@@ -25,7 +25,8 @@ class QuwanspiderSpider(scrapy.Spider):
             print ("title : " + p.xpath('dl/dd/a/@title').extract()[0])
             print("link : " + p.xpath('dl/dd/a/@href').extract()[0])
             print("price : " + p.xpath('dl/dd/span/text()').extract()[0])
-            print("logo : " + p.xpath('a/img[@onerror="imgerror(event)"]/@src').extract()[0])
+            logo = p.xpath('a/img[@onerror="imgerror(event)"]/@src').extract()[0]
+            print("logo : " + logo)
             url = p.xpath('dl/dd/a/@href').extract()[0]
             print("link : " + url)
 
@@ -35,7 +36,7 @@ class QuwanspiderSpider(scrapy.Spider):
 
             urlid = re.compile(r'//.*/(.*?)\.html').findall(url)[0]
             print("=====生成抓取任务："+ urlid + url)
-            yield Request(url=url, callback=self.parse_details, meta={'url': url, 'urlid':urlid})
+            yield Request(url=url, callback=self.parse_details, meta={'url': url, 'urlid':urlid, 'logo':logo})
         print("=====抓取产品列表总数：%d" % count)
 
 
@@ -47,7 +48,7 @@ class QuwanspiderSpider(scrapy.Spider):
         print("=====商品id：" + response.meta['urlid'])
         item['page_id'] = "home_index"
         item['goods_id'] = response.meta['urlid']
-
+        item['logo'] = response.meta['logo']
 
         #解析产品详情
         sel = Selector(response)
@@ -65,7 +66,7 @@ class QuwanspiderSpider(scrapy.Spider):
         item['pic_zoom_b2'] = imgs
 
         print("=====缩略小图 src")
-        imgs = sel.xpath('//ul[@class="pic_index"]/li[@class="pic_li"]/img/@src').extract()
+        imgs = sel.xpath('//ul[@class="pic_index"]/li/img/@src').extract()
         for img in imgs:
             print(img)
         item['pic_zoom_m'] = imgs
