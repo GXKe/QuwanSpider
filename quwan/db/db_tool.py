@@ -65,12 +65,13 @@ class DBImpl(object):
         self.conn.execute('''
                 create table page_goods(
                page_id        char(50)  NOT NULL,
+               page_title     char(100) NOT NULL,
                goods_id       char(50) NOT  NULL);
                 ''')
         print("create table success: 页面--商品关联表")
 
-    def insert_page_goods(self, page_id, goods_id):
-        sql = "INSERT INTO page_goods VALUES (" + '\'' + page_id +"\',\'" + goods_id +"\');"
+    def insert_page_goods(self, page_id, page_title,  goods_id):
+        sql = "INSERT INTO page_goods VALUES (" + '\'' + page_id +"\',\'"  + page_title +"\',\'" + goods_id +"\');"
         self.conn.execute(sql)
         self.conn.commit()
         print(sql)

@@ -36,7 +36,7 @@ class QuwanspiderSpider(scrapy.Spider):
 
             urlid = re.compile(r'//.*/(.*?)\.html').findall(url)[0]
             print("=====生成抓取任务："+ urlid + url)
-            yield Request(url=url, callback=self.parse_details, meta={'url': url, 'urlid':urlid, 'logo':logo})
+            yield Request(url=url, callback=self.parse_details, meta={'url': url, 'urlid':urlid, 'logo':logo, 'page_id':"home_index",'page_title':"首页"})
         print("=====抓取产品列表总数：%d" % count)
 
 
@@ -46,7 +46,8 @@ class QuwanspiderSpider(scrapy.Spider):
         print("item idx: %d" % self.item)
         print("=====抓取到详情页url：" + response.meta['url'])
         print("=====商品id：" + response.meta['urlid'])
-        item['page_id'] = "home_index"
+        item['page_id'] = response.meta['page_id']
+        item['page_title'] = response.meta['page_title']
         item['goods_id'] = response.meta['urlid']
         item['logo'] = response.meta['logo']
 

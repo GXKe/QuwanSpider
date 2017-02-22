@@ -12,7 +12,8 @@ class QuwanItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     goods_id = scrapy.Field()   #商品id
-    page_id = scrapy.Field()    #商品索引页
+    page_id = scrapy.Field()    #页面id
+    page_title = scrapy.Field() #页面标签
     logo = scrapy.Field()       #商品列表logo
     price = scrapy.Field()
     title = scrapy.Field()
